@@ -12,7 +12,7 @@ public class MutationSimulator {
     private Double requiredChance;
     private Boolean allAcquired = false;
     private int maxRounds;
-    private ArrayList<String> commonMutation = new ArrayList<String>(Arrays.asList("Icarus", "Through-Hole", "Elitist", "Money Power", "Craftsmanship", "HP Rob", "Bomb Hardening", "Claw Strengthing", "Skill Evolution", "Steel Skin", "Money Worm", "Enhance Recovery", "Hunting Instinct", "Increased Stamina", "Boxer", "Increase Ammo", "Transparent Reloading", "Focus Attack", "Booster", "Bullet Addition", "Explosive Bullets", "Fire Bullets", "Sharpshooter", "Sixth Sense", "Forced Fall", "Vaccine Grenade", "Bomb Backpack", "Bombardment Support", "Critical Hit", "Steel Bullet", "Shotgun Grenade", "Fireball", "Nitrogen Grenade", "Reinforced Genes", "Resist", "Steel Armor", "Flippers", "Steel Head", "Adaptability", "Elephant"));
+    private ArrayList<String> commonMutation = new ArrayList<String>(Arrays.asList("Icarus", "Through-Hole", "Elitist", "Money Power", "Craftsmanship", "HP Rob", "Bomb Hardening", "Claw Strengthening", "Skill Evolution", "Steel Skin", "Money Worm", "Enhance Recovery", "Hunting Instinct", "Increased Stamina", "Boxer", "Increase Ammo", "Transparent Reloading", "Focus Attack", "Booster", "Bullet Addition", "Explosive Bullets", "Fire Bullets", "Sharpshooter", "Sixth Sense", "Forced Fall", "Vaccine Grenade", "Bomb Backpack", "Bombardment Support", "Critical Hit", "Steel Bullet", "Shotgun Grenade", "Fireball", "Nitrogen Grenade", "Reinforced Genes", "Resist", "Steel Armor", "Flippers", "Steel Head", "Adaptability", "Elephant"));
     private ArrayList<String> rareMutation = new ArrayList<String>(Arrays.asList("Cheetah", "Kangaroo", "Double Jump", "Hero Appearance", "Fast Reload", "Contact Infection", "Bio-Bomb"));
     private ArrayList<String> requiredMutation = new ArrayList<String>(Arrays.asList("Enthusiasm", "Specialist", "Resurrection"));
 
@@ -29,7 +29,7 @@ public class MutationSimulator {
             mutationRNG(user, roundNum);
         }
         else {
-            System.out.println("User " + user + " has reached the max # of acquirable mutation!");
+            System.out.println(user + " has reached the max # of acquirable mutation!");
             System.out.println();
         }
     }
@@ -49,10 +49,12 @@ public class MutationSimulator {
             if (commonMutation.size() > 0) {
                 int mutationIndex = rng.nextInt(commonMutation.size());
                 acquiredMutations[numAcquired] = commonMutation.remove(mutationIndex);
+                System.out.println(user + " has obtained " + acquiredMutations[numAcquired] + "!");
+                System.out.println();
                 numAcquired++;
             }
             else {
-                System.out.println("User " + user + " has obtained all common mutations!");
+                System.out.println(user + " has obtained all common mutations!");
                 System.out.println("Searching for other mutations...");
                 System.out.println();
                 if (rareChance == -1.0 && requiredChance != -1.0) {
@@ -78,10 +80,12 @@ public class MutationSimulator {
             if (rareMutation.size() > 0) {
                 int mutationIndex = rng.nextInt(rareMutation.size());
                 acquiredMutations[numAcquired] = rareMutation.remove(mutationIndex);
+                System.out.println(user + " has obtained " + acquiredMutations[numAcquired] + "!");
+                System.out.println();
                 numAcquired++;
             }
             else {
-                System.out.println("User " + user + " has obtained all rare mutations!");
+                System.out.println(user + " has obtained all rare mutations!");
                 System.out.println("Searching for other mutations...");
                 System.out.println();
                 if (commonChance == -1.0 && requiredChance != -1.0) {
@@ -107,6 +111,8 @@ public class MutationSimulator {
             if (requiredMutation.size() > 0) {
                 int mutationIndex = rng.nextInt(requiredMutation.size());
                 acquiredMutations[numAcquired] = requiredMutation.remove(mutationIndex);
+                System.out.println(user + " has obtained " + acquiredMutations[numAcquired] + "!");
+                System.out.println();
                 numAcquired++;
     
                 // every iteration of this RNG (every time a player obtains mutation point), lower the chance of common mutation by 10% and vice versa to obtaining required mutations.
@@ -123,7 +129,7 @@ public class MutationSimulator {
                 }
             }
             else {
-                System.out.println("User " + user + " has obtained all required mutations!");
+                System.out.println(user + " has obtained all required mutations!");
                 System.out.println("Searching for other mutations...");
                 System.out.println();
 
@@ -146,7 +152,7 @@ public class MutationSimulator {
     }
 
     public void allMutationsAcquired(String user) {
-        System.out.println("User " + user + " has obtained all mutations!");
+        System.out.println(user + " has obtained all mutations!");
         System.out.println();
         allAcquired = true;
     }
@@ -157,13 +163,17 @@ public class MutationSimulator {
         // if not, have it initalized to the max number of rounds.
         int allObtainedRound = numRounds;
 
-        for (int i = 0; i < numRounds; i++) {
+        for (int i = 1; i <= numRounds; i++) {
             // randomly generate the number of mutation points a player has earned in a round to simulate real gameplay environment.
             // will put higher weight on lower numbers using exponential distribution so it's unlikely that players obtain unrealistic amounts of points in a round.
             int numMutationEarned = 1;
 
+            System.out.println("Round " + i);
+            System.out.println("------------------");
+
             for (int j = 0; j < numMutationEarned; j++) {
                 run(user, numRounds);
+
                 if (allAcquired == true) {
                     break;
                 }
@@ -197,6 +207,5 @@ public class MutationSimulator {
         int numRounds = Integer.parseInt(args[1]);
         MutationSimulator simulator = new MutationSimulator(name, numRounds);
         simulator.start();
-        System.out.println(simulator.c);
     }
 }
